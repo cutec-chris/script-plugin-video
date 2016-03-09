@@ -4,13 +4,13 @@
     <PathDelim Value="\"/>
     <Version Value="9"/>
     <BuildModes Active="Default"/>
-    <Units Count="27">
+    <Units Count="30">
       <Unit0>
-        <Filename Value="video.lpr"/>
+        <Filename Value="imagelib.lpr"/>
         <IsPartOfProject Value="True"/>
         <IsVisibleTab Value="True"/>
-        <TopLine Value="7"/>
-        <CursorPos X="19" Y="16"/>
+        <TopLine Value="128"/>
+        <CursorPos X="19" Y="88"/>
         <UsageCount Value="52"/>
         <Loaded Value="True"/>
       </Unit0>
@@ -115,11 +115,10 @@
       </Unit14>
       <Unit15>
         <Filename Value="..\serialport\serial_win.pp"/>
-        <EditorIndex Value="2"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="100"/>
         <CursorPos X="53" Y="19"/>
         <UsageCount Value="24"/>
-        <Loaded Value="True"/>
       </Unit15>
       <Unit16>
         <Filename Value="C:\Programme\lazarus124\fpc\2.6.4\source\rtl\objpas\sysutils\sysutilh.inc"/>
@@ -137,10 +136,9 @@
       </Unit17>
       <Unit18>
         <Filename Value="..\serialport\serial_osx.pp"/>
-        <EditorIndex Value="1"/>
+        <EditorIndex Value="-1"/>
         <CursorPos X="45" Y="21"/>
         <UsageCount Value="24"/>
-        <Loaded Value="True"/>
       </Unit18>
       <Unit19>
         <Filename Value="C:\Programme\lazarus124\fpc\2.6.4\source\rtl\unix\unix.pp"/>
@@ -197,8 +195,100 @@
         <CursorPos X="14" Y="95"/>
         <UsageCount Value="10"/>
       </Unit26>
+      <Unit27>
+        <Filename Value="..\..\..\..\..\..\visual_test_git\src\uvisualscripting.pas"/>
+        <EditorIndex Value="2"/>
+        <CursorPos Y="19"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit27>
+      <Unit28>
+        <Filename Value="C:\Programme\lazarus\fpc\2.6.4\source\packages\fcl-image\src\fpimage.pp"/>
+        <UnitName Value="FPimage"/>
+        <EditorIndex Value="1"/>
+        <TopLine Value="163"/>
+        <CursorPos X="19" Y="171"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit28>
+      <Unit29>
+        <Filename Value="C:\Programme\lazarus\fpc\2.6.4\source\rtl\morphos\graphics.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="2180"/>
+        <CursorPos X="40" Y="2199"/>
+        <UsageCount Value="10"/>
+      </Unit29>
     </Units>
-    <JumpHistory HistoryIndex="-1"/>
+    <JumpHistory Count="17" HistoryIndex="16">
+      <Position1>
+        <Filename Value="imagelib.lpr"/>
+        <Caret Line="20" Column="61"/>
+      </Position1>
+      <Position2>
+        <Filename Value="imagelib.lpr"/>
+        <Caret Line="21" Column="60" TopLine="4"/>
+      </Position2>
+      <Position3>
+        <Filename Value="imagelib.lpr"/>
+        <Caret Line="20" Column="122"/>
+      </Position3>
+      <Position4>
+        <Filename Value="imagelib.lpr"/>
+        <Caret Line="21" Column="88" TopLine="6"/>
+      </Position4>
+      <Position5>
+        <Filename Value="imagelib.lpr"/>
+        <Caret Line="183" Column="17" TopLine="164"/>
+      </Position5>
+      <Position6>
+        <Filename Value="imagelib.lpr"/>
+        <Caret Line="6" Column="37"/>
+      </Position6>
+      <Position7>
+        <Filename Value="imagelib.lpr"/>
+        <Caret Line="15" Column="29"/>
+      </Position7>
+      <Position8>
+        <Filename Value="imagelib.lpr"/>
+        <Caret Line="22" Column="29" TopLine="3"/>
+      </Position8>
+      <Position9>
+        <Filename Value="imagelib.lpr"/>
+        <Caret Line="6" Column="50"/>
+      </Position9>
+      <Position10>
+        <Filename Value="imagelib.lpr"/>
+        <Caret Line="27" Column="29" TopLine="13"/>
+      </Position10>
+      <Position11>
+        <Filename Value="imagelib.lpr"/>
+        <Caret Line="32" Column="34" TopLine="13"/>
+      </Position11>
+      <Position12>
+        <Filename Value="imagelib.lpr"/>
+        <Caret Line="34" Column="31" TopLine="14"/>
+      </Position12>
+      <Position13>
+        <Filename Value="..\..\..\..\..\..\visual_test_git\src\uvisualscripting.pas"/>
+        <Caret Line="53" Column="39" TopLine="37"/>
+      </Position13>
+      <Position14>
+        <Filename Value="imagelib.lpr"/>
+        <Caret Line="38" Column="3" TopLine="16"/>
+      </Position14>
+      <Position15>
+        <Filename Value="imagelib.lpr"/>
+        <Caret Line="6" Column="60"/>
+      </Position15>
+      <Position16>
+        <Filename Value="imagelib.lpr"/>
+        <Caret Line="68" Column="5" TopLine="49"/>
+      </Position16>
+      <Position17>
+        <Filename Value="imagelib.lpr"/>
+        <Caret Line="20"/>
+      </Position17>
+    </JumpHistory>
   </ProjectSession>
   <Debugging>
     <BreakPoints Count="9">
