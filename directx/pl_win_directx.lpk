@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <Package Version="4">
+    <PathDelim Value="\"/>
+    <Name Value="pl_win_directx"/>
+    <Type Value="RunAndDesignTime"/>
+    <CompilerOptions>
+      <Version Value="11"/>
+      <PathDelim Value="\"/>
+      <SearchPaths>
+        <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
+      </SearchPaths>
+    </CompilerOptions>
+    <Files Count="23">
+      <Item1>
+        <Filename Value="D3DX8.pas"/>
+        <UnitName Value="D3DX8"/>
+      </Item1>
+      <Item2>
+        <Filename Value="D3DX9.pas"/>
+        <UnitName Value="D3DX9"/>
+      </Item2>
+      <Item3>
+        <Filename Value="Direct3D.pas"/>
+        <UnitName Value="Direct3D"/>
+      </Item3>
+      <Item4>
+        <Filename Value="Direct3D8.pas"/>
+        <UnitName Value="Direct3D8"/>
+      </Item4>
+      <Item5>
+        <Filename Value="Direct3D9.pas"/>
+        <UnitName Value="Direct3D9"/>
+      </Item5>
+      <Item6>
+        <Filename Value="DirectDraw.pas"/>
+        <UnitName Value="DirectDraw"/>
+      </Item6>
+      <Item7>
+        <Filename Value="DirectInput.pas"/>
+        <UnitName Value="DirectInput"/>
+      </Item7>
+      <Item8>
+        <Filename Value="DirectMusic.pas"/>
+        <UnitName Value="DirectMusic"/>
+      </Item8>
+      <Item9>
+        <Filename Value="DirectPlay8.pas"/>
+        <UnitName Value="DirectPlay8"/>
+      </Item9>
+      <Item10>
+        <Filename Value="DirectSetup.pas"/>
+        <UnitName Value="DirectSetup"/>
+      </Item10>
+      <Item11>
+        <Filename Value="DirectSound.pas"/>
+        <UnitName Value="DirectSound"/>
+      </Item11>
+      <Item12>
+        <Filename Value="DirectX.inc"/>
+        <Type Value="Include"/>
+      </Item12>
+      <Item13>
+        <Filename Value="DX7toDX8.pas"/>
+        <UnitName Value="DX7toDX8"/>
+      </Item13>
+      <Item14>
+        <Filename Value="DxDiag.pas"/>
+        <UnitName Value="DxDiag"/>
+      </Item14>
+      <Item15>
+        <Filename Value="dxerr8.pas"/>
+        <UnitName Value="DXErr8"/>
+      </Item15>
+      <Item16>
+        <Filename Value="DXErr9.pas"/>
+        <UnitName Value="DXErr9"/>
+      </Item16>
+      <Item17>
+        <Filename Value="DXFile.pas"/>
+        <UnitName Value="DXFile"/>
+      </Item17>
+      <Item18>
+        <Filename Value="DXTypes.pas"/>
+        <UnitName Value="DXTypes"/>
+      </Item18>
+      <Item19>
+        <Filename Value="Jedi.inc"/>
+        <Type Value="Include"/>
+      </Item19>
+      <Item20>
+        <Filename Value="X3DAudio.pas"/>
+        <UnitName Value="X3DAudio"/>
+      </Item20>
+      <Item21>
+        <Filename Value="xact.pas"/>
+        <UnitName Value="xact"/>
+      </Item21>
+      <Item22>
+        <Filename Value="XInput.pas"/>
+        <UnitName Value="XInput"/>
+      </Item22>
+      <Item23>
+        <Filename Value="directshow9.pas"/>
+        <UnitName Value="directshow9"/>
+      </Item23>
+    </Files>
+    <RequiredPkgs Count="1">
+      <Item1>
+        <PackageName Value="FCL"/>
+      </Item1>
+    </RequiredPkgs>
+    <UsageOptions>
+      <UnitPath Value="$(PkgOutDir)"/>
+    </UsageOptions>
+    <PublishOptions>
+      <Version Value="2"/>
+    </PublishOptions>
+  </Package>
+</CONFIG>
