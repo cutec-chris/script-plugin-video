@@ -4,13 +4,13 @@
     <PathDelim Value="\"/>
     <Version Value="9"/>
     <BuildModes Active="Default"/>
-    <Units Count="33">
+    <Units Count="36">
       <Unit0>
         <Filename Value="video.lpr"/>
         <IsPartOfProject Value="True"/>
         <IsVisibleTab Value="True"/>
-        <TopLine Value="275"/>
-        <CursorPos Y="297"/>
+        <TopLine Value="64"/>
+        <CursorPos X="67" Y="15"/>
         <UsageCount Value="55"/>
         <Loaded Value="True"/>
       </Unit0>
@@ -18,7 +18,7 @@
         <Filename Value="ucapture.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="1"/>
-        <TopLine Value="34"/>
+        <TopLine Value="27"/>
         <CursorPos Y="56"/>
         <UsageCount Value="21"/>
         <Loaded Value="True"/>
@@ -207,7 +207,7 @@
       <Unit28>
         <Filename Value="..\..\..\..\..\..\visual_test_git\src\uvisualscripting.pas"/>
         <EditorIndex Value="2"/>
-        <TopLine Value="259"/>
+        <TopLine Value="256"/>
         <CursorPos X="42" Y="290"/>
         <UsageCount Value="12"/>
         <Loaded Value="True"/>
@@ -242,6 +242,27 @@
         <CursorPos Y="123"/>
         <UsageCount Value="10"/>
       </Unit32>
+      <Unit33>
+        <Filename Value="DSPack\directshow9.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="48"/>
+        <CursorPos X="2" Y="70"/>
+        <UsageCount Value="10"/>
+      </Unit33>
+      <Unit34>
+        <Filename Value="directx\directshow9.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="49"/>
+        <CursorPos X="9" Y="73"/>
+        <UsageCount Value="10"/>
+      </Unit34>
+      <Unit35>
+        <Filename Value="DSPack\WMF9.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="7"/>
+        <CursorPos X="16" Y="29"/>
+        <UsageCount Value="10"/>
+      </Unit35>
     </Units>
     <JumpHistory Count="8" HistoryIndex="7">
       <Position1>
