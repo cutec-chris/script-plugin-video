@@ -22,14 +22,14 @@ type
     h,l,s : word;
   end;
 
-procedure CopyToWorkArea(x,y,width,height : Integer);
+procedure CopyToWorkArea(x,y,width,height : Integer);stdcall;
 begin
   if not Assigned(Image) then exit;
   Image.Width:=Width;
   Image.Height:=Height;
   Image.CopyPixels(BaseImage);
 end;
-procedure ScaleImage(NewWidth : Integer;NewHeight : Integer);
+procedure ScaleImage(NewWidth : Integer;NewHeight : Integer);stdcall;
 var
   DestIntfImage: TLazIntfImage;
   DestCanvas: TLazCanvas;
@@ -48,19 +48,19 @@ begin
   Image := DestIntfImage;
   DestCanvas.Free;
 end;
-function ImageWidth : Integer;
+function ImageWidth : Integer;stdcall;
 begin
   result := 0;
   if Assigned(BaseImage) then
     Result := BaseImage.Width;
 end;
-function ImageHeight : Integer;
+function ImageHeight : Integer;stdcall;
 begin
   result := 0;
   if Assigned(BaseImage) then
     Result := BaseImage.Height;
 end;
-procedure SetPixel(x,y : Integer; r,g,b : word);
+procedure SetPixel(x,y : Integer; r,g,b : word);stdcall;
 var
   aColor : TFPColor;
 begin
@@ -70,17 +70,17 @@ begin
   aColor.blue:=b;
   Image.Colors[x,y] := aColor;
 end;
-procedure SetPixelHLS(x,y : Integer; h,l,s : word);
+procedure SetPixelHLS(x,y : Integer; h,l,s : word);stdcall;
 begin
   if not Assigned(Image) then exit;
   Image.Colors[x,y] := TColorToFPColor(HLStoColor(round(h/255),round(l/255),round(s/255)));
 end;
-function GetPixel(x,y : Integer) : TFPColor;
+function GetPixel(x,y : Integer) : TFPColor;stdcall;
 begin
   if not Assigned(Image) then exit;
   Result := Image.Colors[x,y];
 end;
-function GetPixelHLS(x,y : Integer) : THLSColor;
+function GetPixelHLS(x,y : Integer) : THLSColor;stdcall;
 var
   h: Byte;
   l: Byte;
@@ -92,7 +92,7 @@ begin
   Result.l := l*255;
   Result.s := s*255;
 end;
-procedure RefreshImage;
+procedure RefreshImage;stdcall;
 var
   aMaskHandle: HBitmap;
   aHandle: HBitmap;
@@ -106,7 +106,7 @@ begin
   or (Image.Width = 0) then exit;
   (FBitmap.Canvas as TFPCustomCanvas).StretchDraw(0,0,FBitmap.Width,FBitmap.Height,Image);
 end;
-function LoadImage(aFile : string) : Boolean;
+function LoadImage(aFile : PChar) : Boolean;stdcall;
 begin
   result := False;
   if Assigned(BaseImage) then BaseImage.Free;
@@ -128,7 +128,16 @@ begin
   FBaseBitmap.Width := BaseImage.Width;
   (FBaseBitmap.Canvas as TFPCustomCanvas).StretchDraw(0,0,BaseImage.Width,BaseImage.Height,BaseImage);
 end;
-function DoMaskImage(aPercent : Integer) : Boolean;
+function SaveImage(aFile : PChar) : Boolean;stdcall;
+begin
+  result := False;
+  try
+    BaseImage.SaveToFile(aFile);
+    result := True;
+  except
+  end;
+end;
+function DoMaskImage(aPercent : Integer) : Boolean;stdcall;
 var
   x: Integer;
   y: Integer;
@@ -149,14 +158,14 @@ begin
             end;
         end;
 end;
-function SetMaskImage: Boolean;
+function SetMaskImage: Boolean;stdcall;
 begin
   if Assigned(MaskImage) then MaskImage.Free;
   MaskImage := TLazIntfImage.CreateCompatible(BaseImage,BaseImage.Width,BaseImage.Height);
   MaskImage.CopyPixels(BaseImage);
 end;
 
-procedure CapGrabFrame(Destination: Graphics.TBitmap); // Get one live frame
+procedure CapGrabFrame(Destination: Graphics.TBitmap);stdcall; // Get one live frame
 var
   Stream : TFileStream;
   H: THandle;
@@ -166,7 +175,7 @@ begin
   capEditCopy(FCapHandle);               // Copy from buffer to the clipboard
 end;
 
-function CaptureImage(dev: string): Boolean;
+function CaptureImage(dev: PChar): Boolean;stdcall;
 var
   aPicture: TPicture;
 begin
@@ -175,7 +184,7 @@ begin
   if Assigned(BaseImage) then BaseImage.Free;
   try
     BaseImage := TLazIntfImage.Create(0,0);
-    BaseImage.DataDescription := GetDescriptionFromDevice(0);
+    //BaseImage.DataDescription := GetDescriptionFromDevice(GetDC(0));
   except
   end;
   if Clipboard.HasPictureFormat then // Load the frame/image from clipboard
@@ -198,7 +207,7 @@ if not Assigned(FBaseBitmap) then FBaseBitmap := Graphics.TBitmap.Create;
   (FBaseBitmap.Canvas as TFPCustomCanvas).StretchDraw(0,0,BaseImage.Width,BaseImage.Height,BaseImage);
 end;
 
-procedure CapDestroy;             // Destroy capture window
+procedure CapDestroy;stdcall;             // Destroy capture window
 begin
   if FCreated then
   begin
@@ -207,7 +216,7 @@ begin
   end;
 end;
 
-procedure CapDisconnect;          // Disconnect driver
+procedure CapDisconnect;stdcall;          // Disconnect driver
 begin
   if FConnected then
   begin
@@ -216,7 +225,7 @@ begin
   end;
 end;
 
-function DeinitCapture: Boolean;
+function DeinitCapture: Boolean;stdcall;
 begin
   if FCreated then
     begin
@@ -225,7 +234,7 @@ begin
     end;
 end;
 
-procedure CapCreate;              // Create capture window
+procedure CapCreate;stdcall;              // Create capture window
 begin
   CapDestroy; // Destroy if necessary
   FCapHandle := capCreateCaptureWindow('Video Window',
@@ -241,7 +250,7 @@ begin
   end;
 end;
 
-procedure CapConnect;             // Connect/Reconnect window + driver
+procedure CapConnect;stdcall;             // Connect/Reconnect window + driver
 begin
   if FCreated then
   begin
@@ -258,7 +267,7 @@ begin
   end;
 end;
 
-function InitCapture: Boolean;
+function InitCapture: Boolean;stdcall;
 begin
   if not FCreated then
     begin
@@ -269,25 +278,29 @@ end;
 
 function ScriptUnitDefinition : PChar;stdcall;
 begin
-  Result := 'unit ImageLib;'
+  Result := 'unit video;'
        +#10+'interface'
        +#10+'type'
-       +#10+'  TFPColor = record red,green,blue,alpha : word; end;'
-       +#10+'  THLSColor = record h,l,s : word; end;'
-       +#10+'  function CompareColors(Color1, Color2: TFPColor): integer;external ''CompareColors@%dllpath% stdcall'';'''
-       +#10+'  function CalculateGray (From : TFPColor) : word;external ''CalculateGray@%dllpath% stdcall'';'''
-       +#10+'  procedure CopyToWorkArea(x,y,width,height : Integer);external ''CopyToWorkArea@%dllpath% stdcall'';'''
-       +#10+'  function CaptureImage(dev : string) : Boolean;external ''CaptureImage@%dllpath% stdcall'';'''
-       +#10+'  function InitCapture : Boolean;external ''InitCapture@%dllpath% stdcall'';'''
-       +#10+'  procedure ScaleImage(NewWidth : Integer;NewHeight : Integer);external ''ScaleImage@%dllpath% stdcall'';'''
-       +#10+'  function ImageWidth : Integer;external ''ImageWidth@%dllpath% stdcall'';'''
-       +#10+'  function ImageHeight : Integer;external ''ImageHeight@%dllpath% stdcall'';'''
-       +#10+'  procedure SetPixel(x,y : Integer; r,g,b : word);external ''SetPixel@%dllpath% stdcall'';'''
-       +#10+'  procedure SetPixelHLS(x,y : Integer; h,l,s : byte);external ''SetPixelHLS@%dllpath% stdcall'';'''
-       +#10+'  function GetPixel(x,y : Integer) : TFPColor;external ''GetPixel@%dllpath% stdcall'';'''
-       +#10+'  function GetPixelHLS(x,y : Integer) : THLSColor;external ''GetPixelHLS@%dllpath% stdcall'';'''
-       +#10+'  function LoadImage(aImage : string) : Boolean;external ''LoadImage@%dllpath% stdcall'';'''
-       +#10+'  procedure RefreshImage;external ''RefreshImage@%dllpath% stdcall'';'''
+       +#10+'  TFPColor = record red : word;green : word;blue : word;alpha : word; end;'
+       +#10+'  THLSColor = record h : word;l : word;s : word;end;'
+       +#10+''
+       +#10+'  function CompareColors(Color1, Color2: TFPColor): integer;external ''CompareColors@%dllpath% stdcall'';'
+       +#10+'  function CalculateGray (From : TFPColor) : word;external ''CalculateGray@%dllpath% stdcall'';'
+       +#10+'  procedure CopyToWorkArea(x,y,width,height : Integer);external ''CopyToWorkArea@%dllpath% stdcall'';'
+       +#10+'  function CaptureImage(dev : PChar) : Boolean;external ''CaptureImage@%dllpath% stdcall'';'
+       +#10+'  function InitCapture : Boolean;external ''InitCapture@%dllpath% stdcall'';'
+       +#10+'  procedure ScaleImage(NewWidth : Integer;NewHeight : Integer);external ''ScaleImage@%dllpath% stdcall'';'
+       +#10+'  function ImageWidth : Integer;external ''ImageWidth@%dllpath% stdcall'';'
+       +#10+'  function ImageHeight : Integer;external ''ImageHeight@%dllpath% stdcall'';'
+       +#10+'  procedure SetPixel(x,y : Integer; r,g,b : word);external ''SetPixel@%dllpath% stdcall'';'
+       +#10+'  procedure SetPixelHLS(x,y : Integer; h,l,s : byte);external ''SetPixelHLS@%dllpath% stdcall'';'
+       +#10+'  function GetPixel(x,y : Integer) : TFPColor;external ''GetPixel@%dllpath% stdcall'';'
+       +#10+'  function GetPixelHLS(x,y : Integer) : THLSColor;external ''GetPixelHLS@%dllpath% stdcall'';'
+       +#10+'  function LoadImage(aImage : PChar) : Boolean;external ''LoadImage@%dllpath% stdcall'';'
+       +#10+'  function SaveImage(aImage : PChar) : Boolean;external ''SaveImage@%dllpath% stdcall'';'
+       +#10+'  procedure RefreshImage;external ''RefreshImage@%dllpath% stdcall'';'
+       +#10+'implementation'
+       +#10+'end.'
             ;
 end;
 
@@ -312,6 +325,8 @@ exports
   GetPixel,
   GetPixelHLS,
   LoadImage,
+  SaveImage,
+  RefreshImage,
 
   ScriptUnitDefinition,
   ScriptCleanup;
