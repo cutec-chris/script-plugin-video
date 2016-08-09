@@ -1,3 +1,6 @@
 [submodule "DSPack"]
 	path = DSPack
 	url = https://github.com/cutec-chris/DSPack-Lazarus.git
+[submodule "v4l"]
+	path = v4l
+	url = https://github.com/uaply/fpcVideo4L2.git

@@ -3,10 +3,13 @@ library video;
 {$mode objfpc}{$H+}
 
 uses
-  Classes,sysutils,general_nogui,FPimage,FPCanvas,FPImgCanv,math,ucapture,
-  IntfGraphics,lazcanvas,Graphics,GraphUtil,vfw,Clipbrd
+  Classes,sysutils,general_nogui,FPimage,FPCanvas,FPImgCanv,math,
+  IntfGraphics,lazcanvas,Graphics,GraphUtil
   {$IFDEF WINDOWS}
-  ,Windows
+  ,Windows,vfw,Clipbrd,ucapture
+  {$ENDIF}
+  {$IFDEF UNIX}
+  ,videocapture
   {$ENDIF}
   ;
 
@@ -16,6 +19,9 @@ var
   MaskImage : TLazIntfImage;
   FBaseBitmap : Graphics.TBitmap;
   FBitmap : Graphics.TBitmap;
+  {$IFDEF UNIX}
+  Cap : TVideo4L2Device = nil;
+  {$ENDIF}
 
 type
   THLSColor = record
@@ -93,6 +99,7 @@ begin
   Result.s := s*255;
 end;
 procedure RefreshImage;stdcall;
+{$IFDEF WINDOWS}
 var
   aMaskHandle: HBitmap;
   aHandle: HBitmap;
@@ -106,6 +113,11 @@ begin
   or (Image.Width = 0) then exit;
   (FBitmap.Canvas as TFPCustomCanvas).StretchDraw(0,0,FBitmap.Width,FBitmap.Height,Image);
 end;
+{$ELSE}
+begin
+
+end;
+{$ENDIF}
 function LoadImage(aFile : PChar) : Boolean;stdcall;
 begin
   result := False;
@@ -137,34 +149,7 @@ begin
   except
   end;
 end;
-function DoMaskImage(aPercent : Integer) : Boolean;stdcall;
-var
-  x: Integer;
-  y: Integer;
-  aColor : TFPColor;
-begin
-  Result := False;
-  aColor.alpha:=0;
-  aColor.red:=65535;
-  aColor.green:=65535;
-  aColor.blue:=65535;
-  if Assigned(MaskImage) then
-    for x := 0 to BaseImage.Width-1 do
-      for y := 0 to BaseImage.Height-1 do
-        begin
-          if CompareColors(BaseImage.Colors[x,y],MaskImage.Colors[x,y]) >= aPercent then
-            begin
-              BaseImage.Colors[x,y] := aColor;
-            end;
-        end;
-end;
-function SetMaskImage: Boolean;stdcall;
-begin
-  if Assigned(MaskImage) then MaskImage.Free;
-  MaskImage := TLazIntfImage.CreateCompatible(BaseImage,BaseImage.Width,BaseImage.Height);
-  MaskImage.CopyPixels(BaseImage);
-end;
-
+{$IFDEF WINDOWS}
 procedure CapGrabFrame(Destination: Graphics.TBitmap);stdcall; // Get one live frame
 var
   Stream : TFileStream;
@@ -201,7 +186,7 @@ begin
       Image.DataDescription := GetDescriptionFromDevice(0);
     end;
   RefreshImage;
-if not Assigned(FBaseBitmap) then FBaseBitmap := Graphics.TBitmap.Create;
+  if not Assigned(FBaseBitmap) then FBaseBitmap := Graphics.TBitmap.Create;
   FBaseBitmap.Height := BaseImage.Height;
   FBaseBitmap.Width := BaseImage.Width;
   (FBaseBitmap.Canvas as TFPCustomCanvas).StretchDraw(0,0,BaseImage.Width,BaseImage.Height,BaseImage);
@@ -214,6 +199,8 @@ begin
     //DestroyWindow(FCapHandle);
     FCreated := False;
   end;
+end;
+
 end;
 
 procedure CapDisconnect;stdcall;          // Disconnect driver
@@ -275,6 +262,21 @@ begin
       CapConnect;
     end;
 end;
+{$ELSE}
+function CaptureImage(dev: PChar): Boolean;stdcall;
+begin
+  if not Assigned(Cap) then
+    Cap := TVideo4L2Device.Create(nil);
+  Cap.Device:=dev;
+end;
+
+function DeinitCapture: Boolean;stdcall;
+begin
+  if Assigned(Cap) then
+    FreeAndNil(Cap);
+end;
+
+{$ENDIF}
 
 function ScriptUnitDefinition : PChar;stdcall;
 begin
@@ -288,7 +290,6 @@ begin
        +#10+'  function CalculateGray (From : TFPColor) : word;external ''CalculateGray@%dllpath% stdcall'';'
        +#10+'  procedure CopyToWorkArea(x,y,width,height : Integer);external ''CopyToWorkArea@%dllpath% stdcall'';'
        +#10+'  function CaptureImage(dev : PChar) : Boolean;external ''CaptureImage@%dllpath% stdcall'';'
-       +#10+'  function InitCapture : Boolean;external ''InitCapture@%dllpath% stdcall'';'
        +#10+'  procedure ScaleImage(NewWidth : Integer;NewHeight : Integer);external ''ScaleImage@%dllpath% stdcall'';'
        +#10+'  function ImageWidth : Integer;external ''ImageWidth@%dllpath% stdcall'';'
        +#10+'  function ImageHeight : Integer;external ''ImageHeight@%dllpath% stdcall'';'
@@ -314,9 +315,6 @@ exports
   CalculateGray,
   CopyToWorkArea,
   CaptureImage,
-  InitCapture,
-  SetMaskImage,
-  MaskImage,
   ScaleImage,
   ImageWidth,
   ImageHeight,
