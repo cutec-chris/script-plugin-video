@@ -17,19 +17,19 @@ type
     h,l,s : word;
   end;
 
-  procedure CopyToWorkArea(x,y,width,height : Integer);stdcall;
-  procedure ScaleImage(NewWidth : Integer;NewHeight : Integer);stdcall;
-  function ImageWidth : Integer;stdcall;
-  function ImageHeight : Integer;stdcall;
-  procedure SetPixel(x,y : Integer; r,g,b : word);stdcall;
-  procedure SetPixelHLS(x,y : Integer; h,l,s : word);stdcall;
-  function GetPixel(x,y : Integer) : TFPColor;stdcall;
-  function GetPixelHLS(x,y : Integer) : THLSColor;stdcall;
-  procedure RefreshImage;stdcall;
-  function LoadImage(aFile : PChar) : Boolean;stdcall;
-  function SaveImage(aFile : PChar) : Boolean;stdcall;
-  function CaptureImage(dev: PChar): Boolean;stdcall;
-  function DeinitCapture: Boolean;stdcall;
+  procedure CopyToWorkArea(x,y,width,height : Integer);{$IFDEF LIBRARY}stdcall;{$ENDIF}
+  procedure ScaleImage(NewWidth : Integer;NewHeight : Integer);{$IFDEF LIBRARY}stdcall;{$ENDIF}
+  function ImageWidth : Integer;{$IFDEF LIBRARY}stdcall;{$ENDIF}
+  function ImageHeight : Integer;{$IFDEF LIBRARY}stdcall;{$ENDIF}
+  procedure SetPixel(x,y : Integer; r,g,b : word);{$IFDEF LIBRARY}stdcall;{$ENDIF}
+  procedure SetPixelHLS(x,y : Integer; h,l,s : word);{$IFDEF LIBRARY}stdcall;{$ENDIF}
+  function GetPixel(x,y : Integer) : TFPColor;{$IFDEF LIBRARY}stdcall;{$ENDIF}
+  function GetPixelHLS(x,y : Integer) : THLSColor;{$IFDEF LIBRARY}stdcall;{$ENDIF}
+  procedure RefreshImage;{$IFDEF LIBRARY}stdcall;{$ENDIF}
+  function LoadImage(aFile : PChar) : Boolean;{$IFDEF LIBRARY}stdcall;{$ENDIF}
+  function SaveImage(aFile : PChar) : Boolean;{$IFDEF LIBRARY}stdcall;{$ENDIF}
+  function CaptureImage(dev: PChar): Boolean;{$IFDEF LIBRARY}stdcall;{$ENDIF}
+  function DeinitCapture: Boolean;{$IFDEF LIBRARY}stdcall;{$ENDIF}
 
 implementation
 
@@ -40,14 +40,14 @@ var
   FBaseBitmap : Graphics.TBitmap;
   FBitmap : Graphics.TBitmap;
 
-procedure CopyToWorkArea(x,y,width,height : Integer);stdcall;
+procedure CopyToWorkArea(x,y,width,height : Integer);{$IFDEF LIBRARY}stdcall;{$ENDIF}
 begin
   if not Assigned(Image) then exit;
   Image.Width:=Width;
   Image.Height:=Height;
   Image.CopyPixels(BaseImage);
 end;
-procedure ScaleImage(NewWidth : Integer;NewHeight : Integer);stdcall;
+procedure ScaleImage(NewWidth : Integer;NewHeight : Integer);{$IFDEF LIBRARY}stdcall;{$ENDIF}
 var
   DestIntfImage: TLazIntfImage;
   DestCanvas: TLazCanvas;
@@ -66,19 +66,19 @@ begin
   Image := DestIntfImage;
   DestCanvas.Free;
 end;
-function ImageWidth : Integer;stdcall;
+function ImageWidth : Integer;{$IFDEF LIBRARY}stdcall;{$ENDIF}
 begin
   result := 0;
   if Assigned(BaseImage) then
     Result := BaseImage.Width;
 end;
-function ImageHeight : Integer;stdcall;
+function ImageHeight : Integer;{$IFDEF LIBRARY}stdcall;{$ENDIF}
 begin
   result := 0;
   if Assigned(BaseImage) then
     Result := BaseImage.Height;
 end;
-procedure SetPixel(x,y : Integer; r,g,b : word);stdcall;
+procedure SetPixel(x,y : Integer; r,g,b : word);{$IFDEF LIBRARY}stdcall;{$ENDIF}
 var
   aColor : TFPColor;
 begin
@@ -88,17 +88,17 @@ begin
   aColor.blue:=b;
   Image.Colors[x,y] := aColor;
 end;
-procedure SetPixelHLS(x,y : Integer; h,l,s : word);stdcall;
+procedure SetPixelHLS(x,y : Integer; h,l,s : word);{$IFDEF LIBRARY}stdcall;{$ENDIF}
 begin
   if not Assigned(Image) then exit;
   Image.Colors[x,y] := TColorToFPColor(HLStoColor(round(h/255),round(l/255),round(s/255)));
 end;
-function GetPixel(x,y : Integer) : TFPColor;stdcall;
+function GetPixel(x,y : Integer) : TFPColor;{$IFDEF LIBRARY}stdcall;{$ENDIF}
 begin
   if not Assigned(Image) then exit;
   Result := Image.Colors[x,y];
 end;
-function GetPixelHLS(x,y : Integer) : THLSColor;stdcall;
+function GetPixelHLS(x,y : Integer) : THLSColor;{$IFDEF LIBRARY}stdcall;{$ENDIF}
 var
   h: Byte;
   l: Byte;
@@ -110,7 +110,7 @@ begin
   Result.l := l*255;
   Result.s := s*255;
 end;
-procedure RefreshImage;stdcall;
+procedure RefreshImage;{$IFDEF LIBRARY}stdcall;{$ENDIF}
 var
   aMaskHandle: HBitmap;
   aHandle: HBitmap;
@@ -124,7 +124,7 @@ begin
   or (Image.Width = 0) then exit;
   (FBitmap.Canvas as TFPCustomCanvas).StretchDraw(0,0,FBitmap.Width,FBitmap.Height,Image);
 end;
-function LoadImage(aFile : PChar) : Boolean;stdcall;
+function LoadImage(aFile : PChar) : Boolean;{$IFDEF LIBRARY}stdcall;{$ENDIF}
 begin
   result := False;
   if Assigned(BaseImage) then BaseImage.Free;
@@ -146,7 +146,7 @@ begin
   FBaseBitmap.Width := BaseImage.Width;
   (FBaseBitmap.Canvas as TFPCustomCanvas).StretchDraw(0,0,BaseImage.Width,BaseImage.Height,BaseImage);
 end;
-function SaveImage(aFile : PChar) : Boolean;stdcall;
+function SaveImage(aFile : PChar) : Boolean;{$IFDEF LIBRARY}stdcall;{$ENDIF}
 begin
   result := False;
   try
@@ -155,7 +155,7 @@ begin
   except
   end;
 end;
-procedure CapGrabFrame(Destination: Graphics.TBitmap);stdcall; // Get one live frame
+procedure CapGrabFrame(Destination: Graphics.TBitmap);{$IFDEF LIBRARY}stdcall;{$ENDIF} // Get one live frame
 var
   Stream : TFileStream;
   H: THandle;
@@ -164,7 +164,7 @@ begin
   capGrabFrameNoStop(FCapHandle);        // Copy the current frame to a buffer
   capEditCopy(FCapHandle);               // Copy from buffer to the clipboard
 end;
-function CaptureImage(dev: PChar): Boolean;stdcall;
+function CaptureImage(dev: PChar): Boolean;{$IFDEF LIBRARY}stdcall;{$ENDIF}
 var
   aPicture: TPicture;
 begin
@@ -195,7 +195,7 @@ if not Assigned(FBaseBitmap) then FBaseBitmap := Graphics.TBitmap.Create;
   FBaseBitmap.Width := BaseImage.Width;
   (FBaseBitmap.Canvas as TFPCustomCanvas).StretchDraw(0,0,BaseImage.Width,BaseImage.Height,BaseImage);
 end;
-procedure CapDestroy;stdcall;             // Destroy capture window
+procedure CapDestroy;{$IFDEF LIBRARY}stdcall;{$ENDIF}             // Destroy capture window
 begin
   if FCreated then
   begin
@@ -203,7 +203,7 @@ begin
     FCreated := False;
   end;
 end;
-procedure CapDisconnect;stdcall;          // Disconnect driver
+procedure CapDisconnect;{$IFDEF LIBRARY}stdcall;{$ENDIF}          // Disconnect driver
 begin
   if FConnected then
   begin
@@ -211,7 +211,7 @@ begin
     FConnected := False;
   end;
 end;
-function DeinitCapture: Boolean;stdcall;
+function DeinitCapture: Boolean;{$IFDEF LIBRARY}stdcall;{$ENDIF}
 begin
   if FCreated then
     begin
@@ -219,7 +219,7 @@ begin
       CapDestroy;
     end;
 end;
-procedure CapCreate;stdcall;              // Create capture window
+procedure CapCreate;{$IFDEF LIBRARY}stdcall;{$ENDIF}              // Create capture window
 begin
   CapDestroy; // Destroy if necessary
   FCapHandle := capCreateCaptureWindow('Video Window',
@@ -234,7 +234,7 @@ begin
     FCreated := False;
   end;
 end;
-procedure CapConnect;stdcall;             // Connect/Reconnect window + driver
+procedure CapConnect;{$IFDEF LIBRARY}stdcall;{$ENDIF}             // Connect/Reconnect window + driver
 begin
   if FCreated then
   begin
@@ -250,7 +250,7 @@ begin
     end;
   end;
 end;
-function InitCapture: Boolean;stdcall;
+function InitCapture: Boolean;{$IFDEF LIBRARY}stdcall;{$ENDIF}
 begin
   if not FCreated then
     begin
