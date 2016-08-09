@@ -3,7 +3,7 @@ unit ucapture;
 {$mode objfpc}{$H+}
 
 interface
-
+{$IFDEF WINDOWS}
 uses
   Classes, SysUtils, vfw, Windows,Graphics,ClipBrd,
   IntfGraphics,FPimage,FPCanvas;
@@ -25,8 +25,9 @@ var
   FConnected:  Boolean;             // Driver connected
   FDriverCaps: TCapDriverCaps;      // Driver capabilities
   FLiveVideo:  Boolean;             // Live Video enabled
+{$ENDIF}
 implementation
-
+{$IFDEF WINDOWS}
 function MsgProc(Handle: HWnd; Msg: UInt; WParam: Windows.WParam;
     LParam: Windows.LParam): LResult; stdcall;
 begin
@@ -67,5 +68,5 @@ function SelectQuality: Boolean;
 begin
   capDlgVideoCompression(FCapHandle);
 end;
-
+{$ENDIF}
 end.

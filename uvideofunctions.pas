@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils,FPimage,FPCanvas,FPImgCanv,math,ucapture,
-  IntfGraphics,lazcanvas,Graphics,GraphUtil
+  IntfGraphics,lazcanvas,Graphics,GraphUtil,LCLType
   {$IFDEF WINDOWS}
   ,Windows,vfw,Clipbrd
   {$ENDIF}
@@ -31,14 +31,14 @@ type
   function CaptureImage(dev: PChar): Boolean;{$IFDEF LIBRARY}stdcall;{$ENDIF}
   function DeinitCapture: Boolean;{$IFDEF LIBRARY}stdcall;{$ENDIF}
 
-implementation
+  var
+    BaseImage : TLazIntfImage;
+    Image : TLazIntfImage;
+    MaskImage : TLazIntfImage;
+    FBaseBitmap : Graphics.TBitmap;
+    FBitmap : Graphics.TBitmap;
 
-var
-  BaseImage : TLazIntfImage;
-  Image : TLazIntfImage;
-  MaskImage : TLazIntfImage;
-  FBaseBitmap : Graphics.TBitmap;
-  FBitmap : Graphics.TBitmap;
+implementation
 
 procedure CopyToWorkArea(x,y,width,height : Integer);{$IFDEF LIBRARY}stdcall;{$ENDIF}
 begin
@@ -155,6 +155,7 @@ begin
   except
   end;
 end;
+{$IFDEF WINDOWS}
 procedure CapGrabFrame(Destination: Graphics.TBitmap);{$IFDEF LIBRARY}stdcall;{$ENDIF} // Get one live frame
 var
   Stream : TFileStream;
@@ -258,7 +259,17 @@ begin
       CapConnect;
     end;
 end;
+{$ELSE}
+function CaptureImage(dev: PChar): Boolean;
+begin
 
+end;
+
+function DeinitCapture: Boolean;
+begin
+
+end;
+{$ENDIF}
 
 end.
 
