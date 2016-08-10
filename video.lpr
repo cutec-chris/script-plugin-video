@@ -4,7 +4,11 @@ library video;
 
 uses
   Interfaces,Forms,
-  Classes,sysutils,general_nogui,uvideofunctions;
+  Classes,sysutils,general_nogui,uvideofunctions
+  {$ifdef WINDOWS}
+  ,ucapture_win
+  {$ENDIF}
+  ;
 
 function ScriptUnitDefinition : PChar;stdcall;
 begin
@@ -36,7 +40,6 @@ end;
 
 procedure ScriptCleanup;stdcall;
 begin
-  DeinitCapture;
 end;
 
 exports

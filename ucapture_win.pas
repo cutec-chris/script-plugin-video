@@ -26,11 +26,9 @@ const
   WM_CAP_GRAB_FRAME_NOSTOP    = WM_CAP_START+ 61;
   WM_CAP_SET_CALLBACK_FRAME   = WM_CAP_START+ 5;
   WM_CAP_GET_VIDEOFORMAT      = WM_CAP_START+ 44;
+  WM_CAP_SET_VIDEOFORMAT      = WM_CAP_START+ 45;
 
   WM_CAP_DLG_VIDEOFORMAT      = WM_CAP_START+ 41;
-
-  SUBLINEHEIGHT= 18;
-  EXTRAHEIGHT= 400;
 
 type
   TVIDEOHDR= record
@@ -85,8 +83,8 @@ begin
 
     for I:= 1 to PICHEIGHT do
       begin
-        Row1 := BaseImage.GetDataLineStart(I-1);
-        for x := 0 to PICWIDTH-1 do
+        Row1 := BaseImage.GetDataLineStart(PICHEIGHT-I);
+        for x := PICWIDTH-1 downto 0 do
           Row1^[x] := FBuf2[(I*PICWIDTH)+x];
       end;
     SendMessage(FCapHandle, WM_CAP_SET_CALLBACK_FRAME, 0, 0);
@@ -100,12 +98,11 @@ var
   i: Integer;
 begin
   InitCapture;
-  if Assigned(BaseImage) then BaseImage.Free;
-  try
-    BaseImage := TLazIntfImage.Create(0,0);
-    BaseImage.DataDescription := GetDescriptionFromDevice(GetDC(0));
-  except
-  end;
+  if not Assigned(BaseImage) then
+    begin
+      BaseImage := TLazIntfImage.Create(0,0);
+      BaseImage.DataDescription := GetDescriptionFromDevice(GetDC(0));
+    end;
   FCaptured := False;
   SendMessage(FCapHandle, WM_CAP_SET_CALLBACK_FRAME, 0, integer(@FrameCallbackFunction));
   SendMessage(FCapHandle, WM_CAP_GRAB_FRAME_NOSTOP, 1, 0); // ist hintergrundlauff盲hig
