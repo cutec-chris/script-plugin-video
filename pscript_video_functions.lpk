@@ -8,17 +8,22 @@
       <Version Value="11"/>
       <PathDelim Value="\"/>
       <SearchPaths>
-        <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)\"/>
+        <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
       </SearchPaths>
+      <Parsing>
+        <SyntaxOptions>
+          <SyntaxMode Value="Delphi"/>
+        </SyntaxOptions>
+      </Parsing>
     </CompilerOptions>
     <Files Count="2">
       <Item1>
-        <Filename Value="ucapture.pas"/>
-        <UnitName Value="ucapture"/>
-      </Item1>
-      <Item2>
         <Filename Value="uvideofunctions.pas"/>
         <UnitName Value="uvideofunctions"/>
+      </Item1>
+      <Item2>
+        <Filename Value="ucapture_win.pas"/>
+        <UnitName Value="ucapture_win"/>
       </Item2>
     </Files>
     <RequiredPkgs Count="2">

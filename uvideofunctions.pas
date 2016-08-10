@@ -5,10 +5,10 @@ unit uvideofunctions;
 interface
 
 uses
-  Classes, SysUtils,FPimage,FPCanvas,FPImgCanv,math,ucapture,
+  Classes, SysUtils,FPimage,FPCanvas,FPImgCanv,math,
   IntfGraphics,lazcanvas,Graphics,GraphUtil,LCLType
   {$IFDEF WINDOWS}
-  ,Windows,vfw,Clipbrd
+  ,ucapture_win
   {$ENDIF}
   ;
 
@@ -28,15 +28,10 @@ type
   procedure RefreshImage;{$IFDEF LIBRARY}stdcall;{$ENDIF}
   function LoadImage(aFile : PChar) : Boolean;{$IFDEF LIBRARY}stdcall;{$ENDIF}
   function SaveImage(aFile : PChar) : Boolean;{$IFDEF LIBRARY}stdcall;{$ENDIF}
-  function CaptureImage(dev: PChar): Boolean;{$IFDEF LIBRARY}stdcall;{$ENDIF}
-  function DeinitCapture: Boolean;{$IFDEF LIBRARY}stdcall;{$ENDIF}
 
   var
     BaseImage : TLazIntfImage;
     Image : TLazIntfImage;
-    MaskImage : TLazIntfImage;
-    FBaseBitmap : Graphics.TBitmap;
-    FBitmap : Graphics.TBitmap;
 
 implementation
 
@@ -115,14 +110,12 @@ var
   aMaskHandle: HBitmap;
   aHandle: HBitmap;
 begin
-  if not Assigned(FBitmap) then
+  if not Assigned(Image) then
     begin
-      FBitmap := Graphics.TBitmap.Create;
+      Image := TLazIntfImage.Create(0,0);
+      Image.DataDescription := GetDescriptionFromDevice(0);
     end;
-  if not Assigned(Image) then exit;
-  if (Image.Height = 0)
-  or (Image.Width = 0) then exit;
-  (FBitmap.Canvas as TFPCustomCanvas).StretchDraw(0,0,FBitmap.Width,FBitmap.Height,Image);
+  Image.CopyPixels(BaseImage);
 end;
 function LoadImage(aFile : PChar) : Boolean;{$IFDEF LIBRARY}stdcall;{$ENDIF}
 begin
@@ -139,12 +132,8 @@ begin
     begin
       Image := TLazIntfImage.Create(0,0);
       Image.DataDescription := GetDescriptionFromDevice(0);
-      RefreshImage;
     end;
-  if not Assigned(FBaseBitmap) then FBaseBitmap := Graphics.TBitmap.Create;
-  FBaseBitmap.Height := BaseImage.Height;
-  FBaseBitmap.Width := BaseImage.Width;
-  (FBaseBitmap.Canvas as TFPCustomCanvas).StretchDraw(0,0,BaseImage.Width,BaseImage.Height,BaseImage);
+  RefreshImage;
 end;
 function SaveImage(aFile : PChar) : Boolean;{$IFDEF LIBRARY}stdcall;{$ENDIF}
 begin
@@ -155,121 +144,6 @@ begin
   except
   end;
 end;
-{$IFDEF WINDOWS}
-procedure CapGrabFrame(Destination: Graphics.TBitmap);{$IFDEF LIBRARY}stdcall;{$ENDIF} // Get one live frame
-var
-  Stream : TFileStream;
-  H: THandle;
-  Bmp : Graphics.TBitmap;
-begin
-  capGrabFrameNoStop(FCapHandle);        // Copy the current frame to a buffer
-  capEditCopy(FCapHandle);               // Copy from buffer to the clipboard
-end;
-function CaptureImage(dev: PChar): Boolean;{$IFDEF LIBRARY}stdcall;{$ENDIF}
-var
-  aPicture: TPicture;
-begin
-  CapGrabFrame(nil);
-  Result := False;
-  if Assigned(BaseImage) then BaseImage.Free;
-  try
-    BaseImage := TLazIntfImage.Create(0,0);
-    BaseImage.DataDescription := GetDescriptionFromDevice(GetDC(0));
-  except
-  end;
-  if Clipboard.HasPictureFormat then // Load the frame/image from clipboard
-    begin
-      result := True;
-      aPicture := TPicture.Create;
-      aPicture.Assign(Clipboard);
-      BaseImage.LoadFromBitmap(aPicture.Bitmap.handle,aPicture.Bitmap.MaskHandle);
-      aPicture.Free;
-    end;
-  if not Assigned(Image) then
-    begin
-      Image := TLazIntfImage.Create(0,0);
-      Image.DataDescription := GetDescriptionFromDevice(0);
-    end;
-  RefreshImage;
-if not Assigned(FBaseBitmap) then FBaseBitmap := Graphics.TBitmap.Create;
-  FBaseBitmap.Height := BaseImage.Height;
-  FBaseBitmap.Width := BaseImage.Width;
-  (FBaseBitmap.Canvas as TFPCustomCanvas).StretchDraw(0,0,BaseImage.Width,BaseImage.Height,BaseImage);
-end;
-procedure CapDestroy;{$IFDEF LIBRARY}stdcall;{$ENDIF}             // Destroy capture window
-begin
-  if FCreated then
-  begin
-    //DestroyWindow(FCapHandle);
-    FCreated := False;
-  end;
-end;
-procedure CapDisconnect;{$IFDEF LIBRARY}stdcall;{$ENDIF}          // Disconnect driver
-begin
-  if FConnected then
-  begin
-    capDriverDisconnect(FCapHandle);
-    FConnected := False;
-  end;
-end;
-function DeinitCapture: Boolean;{$IFDEF LIBRARY}stdcall;{$ENDIF}
-begin
-  if FCreated then
-    begin
-      CapDisconnect;
-      CapDestroy;
-    end;
-end;
-procedure CapCreate;{$IFDEF LIBRARY}stdcall;{$ENDIF}              // Create capture window
-begin
-  CapDestroy; // Destroy if necessary
-  FCapHandle := capCreateCaptureWindow('Video Window',
-    WS_CHILDWINDOW {or WS_VISIBLE} or WS_CLIPCHILDREN or WS_CLIPSIBLINGS
-    //or WS_OVERLAPPED or WS_SIZEBOX
-    , 5, 5, 0, 0, 0, 0);
-
-  if FCapHandle <> 0 then
-    FCreated := True
-  else
-  begin
-    FCreated := False;
-  end;
-end;
-procedure CapConnect;{$IFDEF LIBRARY}stdcall;{$ENDIF}             // Connect/Reconnect window + driver
-begin
-  if FCreated then
-  begin
-    CapDisconnect;                           // Disconnect if necessary
-    if capDriverConnect(FCapHandle, 0) then  // Connect the Capture Driver
-    begin
-      FConnected := True;
-      capDriverGetCaps(FCapHandle, @FDriverCaps, SizeOf(TCapDriverCaps));
-    end
-    else
-    begin
-      FConnected := False;
-    end;
-  end;
-end;
-function InitCapture: Boolean;{$IFDEF LIBRARY}stdcall;{$ENDIF}
-begin
-  if not FCreated then
-    begin
-      CapCreate;
-      CapConnect;
-    end;
-end;
-{$ELSE}
-function CaptureImage(dev: PChar): Boolean;
-begin
-
-end;
-
-function DeinitCapture: Boolean;
-begin
-
-end;
-{$ENDIF}
 
 end.
 
