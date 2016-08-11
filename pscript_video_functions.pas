@@ -7,7 +7,7 @@ unit pscript_video_functions;
 interface
 
 uses
-  uvideofunctions, ucapture_win, LazarusPackageIntf;
+  uvideofunctions, ucapture, LazarusPackageIntf;
 
 implementation
 

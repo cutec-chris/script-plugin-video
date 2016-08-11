@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <ProjectSession>
+    <PathDelim Value="\"/>
+    <Version Value="9"/>
+    <BuildModes Active="Default"/>
+    <Units Count="2">
+      <Unit0>
+        <Filename Value="vfwcapture.lpr"/>
+        <IsPartOfProject Value="True"/>
+        <IsVisibleTab Value="True"/>
+        <TopLine Value="72"/>
+        <CursorPos X="27" Y="108"/>
+        <UsageCount Value="20"/>
+        <Loaded Value="True"/>
+      </Unit0>
+      <Unit1>
+        <Filename Value="ucapture_win.pas"/>
+        <EditorIndex Value="1"/>
+        <TopLine Value="87"/>
+        <CursorPos Y="108"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit1>
+    </Units>
+    <JumpHistory Count="12" HistoryIndex="11">
+      <Position1>
+        <Filename Value="vfwcapture.lpr"/>
+        <Caret Line="3" Column="3"/>
+      </Position1>
+      <Position2>
+        <Filename Value="vfwcapture.lpr"/>
+        <Caret Line="13" Column="3"/>
+      </Position2>
+      <Position3>
+        <Filename Value="vfwcapture.lpr"/>
+        <Caret Line="3" Column="37"/>
+      </Position3>
+      <Position4>
+        <Filename Value="vfwcapture.lpr"/>
+        <Caret Line="17" Column="3"/>
+      </Position4>
+      <Position5>
+        <Filename Value="vfwcapture.lpr"/>
+        <Caret Line="71" TopLine="27"/>
+      </Position5>
+      <Position6>
+        <Filename Value="vfwcapture.lpr"/>
+        <Caret Line="3" Column="48"/>
+      </Position6>
+      <Position7>
+        <Filename Value="vfwcapture.lpr"/>
+        <Caret Line="44" TopLine="20"/>
+      </Position7>
+      <Position8>
+        <Filename Value="vfwcapture.lpr"/>
+        <Caret Line="50" TopLine="34"/>
+      </Position8>
+      <Position9>
+        <Filename Value="vfwcapture.lpr"/>
+        <Caret Line="95" Column="3" TopLine="52"/>
+      </Position9>
+      <Position10>
+        <Filename Value="vfwcapture.lpr"/>
+        <Caret Line="108" TopLine="66"/>
+      </Position10>
+      <Position11>
+        <Filename Value="vfwcapture.lpr"/>
+        <Caret Line="75" Column="28" TopLine="27"/>
+      </Position11>
+      <Position12>
+        <Filename Value="vfwcapture.lpr"/>
+        <Caret Line="76" Column="3"/>
+      </Position12>
+    </JumpHistory>
+  </ProjectSession>
+</CONFIG>

@@ -22,8 +22,8 @@
         <UnitName Value="uvideofunctions"/>
       </Item1>
       <Item2>
-        <Filename Value="ucapture_win.pas"/>
-        <UnitName Value="ucapture_win"/>
+        <Filename Value="ucapture.pas"/>
+        <UnitName Value="ucapture"/>
       </Item2>
     </Files>
     <RequiredPkgs Count="2">

@@ -6,10 +6,7 @@ interface
 
 uses
   Classes, SysUtils,FPimage,FPCanvas,FPImgCanv,math,
-  IntfGraphics,lazcanvas,Graphics,GraphUtil,LCLType
-  {$IFDEF WINDOWS}
-  ,ucapture_win
-  {$ENDIF}
+  IntfGraphics,lazcanvas,Graphics,GraphUtil,LCLType,ucapture
   ;
 
 type
@@ -115,6 +112,7 @@ begin
       Image := TLazIntfImage.Create(0,0);
       Image.DataDescription := GetDescriptionFromDevice(0);
     end;
+  Image.DataDescription:=BaseImage.DataDescription;
   Image.CopyPixels(BaseImage);
 end;
 function LoadImage(aFile : PChar) : Boolean;{$IFDEF LIBRARY}stdcall;{$ENDIF}
