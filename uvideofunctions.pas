@@ -37,7 +37,7 @@ begin
   if not Assigned(Image) then exit;
   Image.Width:=Width;
   Image.Height:=Height;
-  Image.CopyPixels(BaseImage);
+  Image.CopyPixels(BaseImage,x,y);
 end;
 procedure ScaleImage(NewWidth : Integer;NewHeight : Integer);{$IFDEF LIBRARY}stdcall;{$ENDIF}
 var
@@ -103,17 +103,7 @@ begin
   Result.s := s*255;
 end;
 procedure RefreshImage;{$IFDEF LIBRARY}stdcall;{$ENDIF}
-var
-  aMaskHandle: HBitmap;
-  aHandle: HBitmap;
 begin
-  if not Assigned(Image) then
-    begin
-      Image := TLazIntfImage.Create(0,0);
-      Image.DataDescription := GetDescriptionFromDevice(0);
-    end;
-  Image.DataDescription:=BaseImage.DataDescription;
-  Image.CopyPixels(BaseImage);
 end;
 function LoadImage(aFile : PChar) : Boolean;{$IFDEF LIBRARY}stdcall;{$ENDIF}
 begin
@@ -131,7 +121,8 @@ begin
       Image := TLazIntfImage.Create(0,0);
       Image.DataDescription := GetDescriptionFromDevice(0);
     end;
-  RefreshImage;
+  Image.DataDescription:=BaseImage.DataDescription;
+  Image.CopyPixels(BaseImage);
 end;
 function SaveImage(aFile : PChar) : Boolean;{$IFDEF LIBRARY}stdcall;{$ENDIF}
 begin

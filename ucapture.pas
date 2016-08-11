@@ -47,10 +47,16 @@ begin
       BaseImage := TLazIntfImage.Create(0,0);
       BaseImage.DataDescription := GetDescriptionFromDevice(0);
     end;
+  if not Assigned(Image) then
+    begin
+      Image := TLazIntfImage.Create(0,0);
+      Image.DataDescription := GetDescriptionFromDevice(0);
+    end;
   if FileExists(GetTempDir+'capture.png') then
     begin
       BaseImage.LoadFromFile(GetTempDir+'capture.png');
-      RefreshImage;
+      Image.DataDescription:=BaseImage.DataDescription;
+      Image.CopyPixels(BaseImage);
       Result:=True;
     end;
 end;
