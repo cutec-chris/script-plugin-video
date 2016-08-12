@@ -16,7 +16,7 @@
         </SyntaxOptions>
       </Parsing>
     </CompilerOptions>
-    <Files Count="2">
+    <Files Count="3">
       <Item1>
         <Filename Value="uvideofunctions.pas"/>
         <UnitName Value="uvideofunctions"/>
@@ -25,6 +25,10 @@
         <Filename Value="ucapture.pas"/>
         <UnitName Value="ucapture"/>
       </Item2>
+      <Item3>
+        <Filename Value="uhoughtransformation.pas"/>
+        <UnitName Value="uhoughtransformation"/>
+      </Item3>
     </Files>
     <RequiredPkgs Count="2">
       <Item1>
