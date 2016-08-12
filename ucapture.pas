@@ -8,7 +8,7 @@ uses
   Classes, SysUtils, process,IntfGraphics;
 
 function CaptureImage(dev: PChar;Width : Integer = 640;Height : Integer = 480): Boolean;{$IFDEF LIBRARY}stdcall;{$ENDIF}
-function InitCapture(Width,Height : Integer): Boolean;{$IFDEF LIBRARY}stdcall;{$ENDIF}
+function InitCapture(dev : PChar;Width,Height : Integer): Boolean;{$IFDEF LIBRARY}stdcall;{$ENDIF}
 function DeinitCapture: Boolean;{$IFDEF LIBRARY}stdcall;{$ENDIF}
 
 implementation
@@ -25,18 +25,28 @@ var
   aFS: TFileStream;
 begin
   Result := False;
-  InitCapture(Width,Height);
+  InitCapture(dev,Width,Height);
+  if not Assigned(CapProcess) then exit;
+  if not CapProcess.Active then exit;
   DeleteFile(GetTempDir+'capture.png');
+  DeleteFile('frame.bmp');
   for i := 0 to 100 do
     begin
       if FileExists(GetTempDir+'capture.png') then break;
+      if FileExists('frame.bmp') then break;
       sleep(30);
     end;
+  if not FileExists(GetTempDir+'capture.png') then
+    if not FileExists('frame.bmp') then
+      exit;
   aFS := nil;
   while aFS = nil do
     begin
       try
-        aFS := TFileStream.Create(GetTempDir+'capture.png',fmShareDenyRead);
+        if FileExists(GetTempDir+'capture.png') then
+          aFS := TFileStream.Create(GetTempDir+'capture.png',fmShareDenyRead)
+        else if FileExists('frame.bmp') then
+          aFS := TFileStream.Create('frame.bmp',fmShareDenyRead);
       except
         sleep(20);
       end;
@@ -58,14 +68,21 @@ begin
       Image.DataDescription:=BaseImage.DataDescription;
       Image.CopyPixels(BaseImage);
       Result:=True;
+    end
+  else if FileExists('frame.bmp') then
+    begin
+      BaseImage.LoadFromFile('frame.bmp');
+      Image.DataDescription:=BaseImage.DataDescription;
+      Image.CopyPixels(BaseImage);
+      Result:=True;
     end;
 end;
 
-function InitCapture(Width, Height: Integer): Boolean;
+function InitCapture(dev: PChar; Width, Height: Integer): Boolean;
 var
   i: Integer;
 begin
-  if (not Assigned(CapProcess)) or (Width<>FWidth) or (FHeight<>Height) then
+  if (not Assigned(CapProcess)) or (not CapProcess.Active) or (Width<>FWidth) or (FHeight<>Height) then
     begin
       if Assigned(CapProcess) then CapProcess.Terminate(0);
       FreeAndNil(CapProcess);
@@ -74,7 +91,10 @@ begin
       CapProcess := TProcess.Create(nil);
       CapProcess.Options:=[poNoConsole];
       {$IFDEF WINDOWS}
-      CapProcess.CommandLine:='vfwcapture';
+      if Width>640 then
+        CapProcess.CommandLine:='dscapture /width '+IntToStr(Width)+' /height '+IntToStr(Height)+' /period 100 /frames 60 /bmp'
+      else
+        CapProcess.CommandLine:='vfwcapture';
       {$ELSE}
       {$ENDIF}
       CapProcess.Execute;

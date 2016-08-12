@@ -80,39 +80,44 @@ var
 
 var  BitmapInfo: TBitmapInfo;
   i: Integer;
+  aRes: LRESULT;
 
 begin
   FCapHandle:= capCreateCaptureWindow('Video', WS_CHILD {or WS_VISIBLE}, 0, 0, PICWIDTH, PICHEIGHT, GetDesktopWindow, 1);
-  SendMessage(FCapHandle, WM_CAP_DRIVER_CONNECT, 0, 0);
-  SendMessage(FCapHandle, WM_CAP_SET_PREVIEWRATE, 15, 0);
-  sendMessage(FCapHandle, WM_CAP_SET_OVERLAY, 1, 0);
-  SendMessage(FCapHandle, WM_CAP_SET_PREVIEW, 1, 0);
-
-  //SendMessage(FCapHandle, WM_CAP_DLG_VIDEOFORMAT,1,0);     // -this was commented out
-
-  FillChar(BitmapInfo, SizeOf(BitmapInfo), 0);
-  SendMessage(FCapHandle, WM_CAP_GET_VIDEOFORMAT, SizeOf(BitmapInfo), Integer(@BitmapInfo));
-  PICWIDTH:=BitmapInfo.bmiHeader.biWidth;
-  PICHEIGHT:=BitmapInfo.bmiHeader.biHeight;
-  FCodec:= BICompressionToVideoCodec(bitmapinfo.bmiHeader.biCompression);
-
-  BaseImage := TLazIntfImage.Create(0,0);
-
-  while True do
+  aRes := SendMessage(FCapHandle, WM_CAP_DRIVER_CONNECT, 0, 0);
+  if aRes = 1 then
     begin
-      if not FileExists(GetTempPath+'capture.png') then
+      SendMessage(FCapHandle, WM_CAP_SET_PREVIEWRATE, 15, 0);
+      sendMessage(FCapHandle, WM_CAP_SET_OVERLAY, 1, 0);
+      SendMessage(FCapHandle, WM_CAP_SET_PREVIEW, 1, 0);
+
+      //SendMessage(FCapHandle, WM_CAP_DLG_VIDEOFORMAT,1,0);     // -this was commented out
+
+      FillChar(BitmapInfo, SizeOf(BitmapInfo), 0);
+      SendMessage(FCapHandle, WM_CAP_GET_VIDEOFORMAT, SizeOf(BitmapInfo), Integer(@BitmapInfo));
+      PICWIDTH:=BitmapInfo.bmiHeader.biWidth;
+      PICHEIGHT:=BitmapInfo.bmiHeader.biHeight;
+      FCodec:= BICompressionToVideoCodec(bitmapinfo.bmiHeader.biCompression);
+
+      BaseImage := TLazIntfImage.Create(0,0);
+
+      while True do
         begin
-          FCaptured:=False;
-          SendMessage(FCapHandle, WM_CAP_SET_CALLBACK_FRAME, 0, integer(@FrameCallbackFunction));
-          SendMessage(FCapHandle, WM_CAP_GRAB_FRAME_NOSTOP, 1, 0); // ist hintergrundlauff盲hig
-          for i := 0 to 100 do
+          if not FileExists(GetTempPath+'capture.png') then
             begin
-              if FCaptured then
-                break;
-              sleep(30);
-            end;
-        end
-      else sleep(10);
+              FCaptured:=False;
+              SendMessage(FCapHandle, WM_CAP_SET_CALLBACK_FRAME, 0, integer(@FrameCallbackFunction));
+              SendMessage(FCapHandle, WM_CAP_GRAB_FRAME_NOSTOP, 1, 0); // ist hintergrundlauff盲hig
+              for i := 0 to 100 do
+                begin
+                  if FCaptured then
+                    break;
+                  sleep(30);
+                end;
+              if not FCaptured then break;
+            end
+          else sleep(10);
+        end;
     end;
 end.
 
