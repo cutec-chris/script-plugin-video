@@ -4,3 +4,6 @@
 [submodule "v4l"]
 	path = v4l
 	url = https://github.com/uaply/fpcVideo4L2.git
+[submodule "ZXing"]
+	path = ZXing
+	url = https://github.com/cutec-chris/ZXing.Lazarus.git
