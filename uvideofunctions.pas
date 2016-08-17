@@ -25,6 +25,8 @@ type
   procedure RefreshImage;{$IFDEF LIBRARY}stdcall;{$ENDIF}
   function LoadImage(aFile : PChar) : Boolean;{$IFDEF LIBRARY}stdcall;{$ENDIF}
   function SaveImage(aFile : PChar) : Boolean;{$IFDEF LIBRARY}stdcall;{$ENDIF}
+  function ReloadWorkImage(aFile : PChar) : Boolean;{$IFDEF LIBRARY}stdcall;{$ENDIF}
+  function SaveWorkImage(aFile : PChar) : Boolean;{$IFDEF LIBRARY}stdcall;{$ENDIF}
 
   var
     BaseImage : TLazIntfImage;
@@ -129,6 +131,26 @@ begin
   result := False;
   try
     BaseImage.SaveToFile(aFile);
+    result := True;
+  except
+  end;
+end;
+
+function ReloadWorkImage(aFile: PChar): Boolean;{$IFDEF LIBRARY}stdcall;{$ENDIF}
+begin
+  result := False;
+  try
+    Image.LoadFromFile(aFile);
+    result := True;
+  except
+  end;
+end;
+
+function SaveWorkImage(aFile: PChar): Boolean;{$IFDEF LIBRARY}stdcall;{$ENDIF}
+begin
+  result := False;
+  try
+    Image.SaveToFile(aFile);
     result := True;
   except
   end;
