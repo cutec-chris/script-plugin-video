@@ -4,10 +4,7 @@ library video;
 
 uses
   Interfaces,Forms,
-  Classes,sysutils,general_nogui,uvideofunctions
-  {$ifdef WINDOWS}
-  ,ucapture_win
-  {$ENDIF}
+  Classes,sysutils,general_nogui,uvideofunctions,ucapture
   ;
 
 function ScriptUnitDefinition : PChar;stdcall;
@@ -32,6 +29,8 @@ begin
        +#10+'  function GetPixelHLS(x,y : Integer) : THLSColor;external ''GetPixelHLS@%dllpath% stdcall'';'
        +#10+'  function LoadImage(aImage : PChar) : Boolean;external ''LoadImage@%dllpath% stdcall'';'
        +#10+'  function SaveImage(aImage : PChar) : Boolean;external ''SaveImage@%dllpath% stdcall'';'
+       +#10+'  function ReloadWorkImage(aImage : PChar) : Boolean;external ''ReloadWorkImage@%dllpath% stdcall'';'
+       +#10+'  function SaveWorkImage(aImage : PChar) : Boolean;external ''SaveWorkImage@%dllpath% stdcall'';'
        +#10+'  procedure RefreshImage;external ''RefreshImage@%dllpath% stdcall'';'
        +#10+'implementation'
        +#10+'end.'
@@ -60,6 +59,8 @@ exports
   LoadImage,
   SaveImage,
   RefreshImage,
+  ReloadWorkImage,
+  SaveWorkImage,
 
   ScriptUnitDefinition,
   ScriptCleanup;
