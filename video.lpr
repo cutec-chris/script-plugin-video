@@ -19,7 +19,7 @@ begin
 //       +#10+'  function CalculateGray (From : TFPColor) : word;external ''CalculateGray@%dllpath% stdcall'';'
        +#10+'  procedure CopyToWorkArea(x,y,width,height : Integer);external ''CopyToWorkArea@%dllpath% stdcall'';'
        +#10+'  function CaptureImage(dev : PChar) : Boolean;external ''CaptureImage@%dllpath% stdcall'';'
-//       +#10+'  function InitCapture : Boolean;external ''InitCapture@%dllpath% stdcall'';'
+       +#10+'  function InitCapture : Boolean;external ''InitCapture@%dllpath% stdcall'';'
        +#10+'  procedure ScaleImage(NewWidth : Integer;NewHeight : Integer);external ''ScaleImage@%dllpath% stdcall'';'
        +#10+'  function ImageWidth : Integer;external ''ImageWidth@%dllpath% stdcall'';'
        +#10+'  function ImageHeight : Integer;external ''ImageHeight@%dllpath% stdcall'';'

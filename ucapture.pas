@@ -5,7 +5,7 @@ unit ucapture;
 interface
 
 uses
-  Classes, SysUtils, process,IntfGraphics;
+  Classes, SysUtils, process,IntfGraphics,md5;
 
 function CaptureImage(dev: PChar;Width : Integer = 640;Height : Integer = 480): Boolean;{$IFDEF LIBRARY}stdcall;{$ENDIF}
 function InitCapture(dev : PChar;Width,Height : Integer): Boolean;{$IFDEF LIBRARY}stdcall;{$ENDIF}
@@ -18,13 +18,17 @@ uses uvideofunctions;
 var
   CapProcess : TProcess;
   FWidth,FHeight : Integer;
+  LastCRC : string;
 
 function CaptureImage(dev: PChar; Width: Integer; Height: Integer): Boolean;
 var
   i: Integer;
   aFS: TFileStream;
+  aTmp: String;
+label Recap;
 begin
   Result := False;
+Recap:
   InitCapture(dev,Width,Height);
   if not Assigned(CapProcess) then exit;
   if not CapProcess.Active then exit;
@@ -40,6 +44,13 @@ begin
     if not FileExists('frame.bmp') then
       exit;
   aFS := nil;
+  aTmp := MD5Print(MD5File(GetTempDir+'capture.png'));
+  if aTmp=LastCRC then
+    begin
+      InitCapture('none',10,10);//Free Capture Process
+      goto Recap;
+    end;
+  LastCRC := aTmp;
   while aFS = nil do
     begin
       try
