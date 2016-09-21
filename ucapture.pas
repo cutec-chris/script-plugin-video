@@ -44,8 +44,12 @@ Recap:
     if not FileExists('frame.bmp') then
       exit;
   aFS := nil;
-  aTmp := MD5Print(MD5File(GetTempDir+'capture.png'));
-  if aTmp=LastCRC then
+  if FileExists(GetTempDir+'capture.png') then
+    aTmp := MD5Print(MD5File(GetTempDir+'capture.png'))
+  else if FileExists(GetTempDir+'frame.bmp') then
+    aTmp := MD5Print(MD5File(GetTempDir+'frame.bmp'))
+  else aTmp := '';
+  if (aTmp<>'') and (aTmp=LastCRC) then
     begin
       InitCapture('none',10,10);//Free Capture Process
       goto Recap;
@@ -102,8 +106,13 @@ begin
       CapProcess := TProcess.Create(nil);
       CapProcess.Options:=[poNoConsole];
       {$IFDEF WINDOWS}
-      if Width>640 then
-        CapProcess.CommandLine:='dscapture /width '+IntToStr(Width)+' /height '+IntToStr(Height)+' /period 100 /frames 60 /bmp'
+      if (Width>640) or (dev<>'') then
+        begin
+          if dev<>'' then
+            CapProcess.CommandLine:='dscapture /devname "'+dev+'" /width '+IntToStr(Width)+' /height '+IntToStr(Height)+' /period 100 /frames 60 /bmp'
+          else
+            CapProcess.CommandLine:='dscapture /width '+IntToStr(Width)+' /height '+IntToStr(Height)+' /period 100 /frames 60 /bmp';
+        end
       else
         CapProcess.CommandLine:='vfwcapture';
       {$ELSE}

@@ -129,6 +129,7 @@ end;
 function SaveImage(aFile : PChar) : Boolean;{$IFDEF LIBRARY}stdcall;{$ENDIF}
 begin
   result := False;
+  if BaseImage = nil then exit;
   try
     BaseImage.SaveToFile(aFile);
     result := True;
@@ -149,6 +150,7 @@ end;
 function SaveWorkImage(aFile: PChar): Boolean;{$IFDEF LIBRARY}stdcall;{$ENDIF}
 begin
   result := False;
+  if Image = nil then exit;
   try
     Image.SaveToFile(aFile);
     result := True;
