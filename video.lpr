@@ -7,6 +7,11 @@ uses
   Classes,sysutils,general_nogui,uvideofunctions,ucapture
   ;
 
+function CaptureImage(dev: PChar;Width : Integer;Height : Integer): Boolean;stdcall;
+begin
+  DoCaptureImage(dev,Width,Height);
+end;
+
 function ScriptUnitDefinition : PChar;stdcall;
 begin
   Result := 'unit video;'
@@ -46,7 +51,7 @@ exports
 //  CalculateGray,
   CopyToWorkArea,
   CaptureImage,
-//  InitCapture,
+  InitCapture,
 //  SetMaskImage,
 //  MaskImage,
   ScaleImage,
