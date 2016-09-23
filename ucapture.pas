@@ -7,9 +7,9 @@ interface
 uses
   Classes, SysUtils, process,IntfGraphics,md5;
 
-function DoCaptureImage(dev: PChar;Width : Integer = 640;Height : Integer = 480): Boolean;{$IFDEF LIBRARY}stdcall;{$ENDIF}
-function InitCapture(dev : PChar;Width,Height : Integer): Boolean;{$IFDEF LIBRARY}stdcall;{$ENDIF}
-function DeinitCapture: Boolean;{$IFDEF LIBRARY}stdcall;{$ENDIF}
+function DoCaptureImage(dev: PChar;Width : Integer = 640;Height : Integer = 480): Boolean;stdcall;
+function InitCapture(dev : PChar;Width,Height : Integer): Boolean;stdcall;
+function DeinitCapture: Boolean;stdcall;
 
 implementation
 
