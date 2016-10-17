@@ -36,9 +36,9 @@ implementation
 
 procedure CopyToWorkArea(x,y,width,height : Integer);stdcall;
 begin
-  if not Assigned(Image) then exit;
-  Image.Width:=Width;
-  Image.Height:=Height;
+  FreeAndNil(Image);
+  Image := TLazIntfImage.Create(width,height);
+  Image.DataDescription := GetDescriptionFromDevice(0);
   Image.CopyPixels(BaseImage,x,y);
 end;
 procedure ScaleImage(NewWidth : Integer;NewHeight : Integer);stdcall;
@@ -127,10 +127,7 @@ begin
   except
   end;
   if not Assigned(Image) then
-    begin
-      Image := TLazIntfImage.Create(0,0);
-      Image.DataDescription := GetDescriptionFromDevice(0);
-    end;
+    Image := TLazIntfImage.Create(0,0);
   Image.DataDescription:=BaseImage.DataDescription;
   Image.CopyPixels(BaseImage);
 end;
@@ -166,5 +163,8 @@ begin
   end;
 end;
 
+initialization
+  Image := nil;
+  baseImage := nil;
 end.
 

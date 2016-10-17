@@ -20,7 +20,7 @@ var
   FWidth,FHeight : Integer;
   LastCRC : string;
 
-function DoCaptureImage(dev: PChar; Width: Integer; Height: Integer): Boolean;
+function DoCaptureImage(dev: PChar; Width: Integer; Height: Integer): Boolean;stdcall;
 var
   i: Integer;
   aFS: TFileStream;
@@ -80,20 +80,16 @@ Recap:
   if FileExists(GetTempDir+'capture.png') then
     begin
       BaseImage.LoadFromFile(GetTempDir+'capture.png');
-      Image.DataDescription:=BaseImage.DataDescription;
-      Image.CopyPixels(BaseImage);
       Result:=True;
     end
   else if FileExists('frame.bmp') then
     begin
       BaseImage.LoadFromFile('frame.bmp');
-      Image.DataDescription:=BaseImage.DataDescription;
-      Image.CopyPixels(BaseImage);
       Result:=True;
     end;
 end;
 
-function InitCapture(dev: PChar; Width, Height: Integer): Boolean;
+function InitCapture(dev: PChar; Width, Height: Integer): Boolean;stdcall;
 var
   i: Integer;
 begin
@@ -121,7 +117,7 @@ begin
     end;
 end;
 
-function DeinitCapture: Boolean;
+function DeinitCapture: Boolean;stdcall;
 begin
   FreeAndNIl(CapProcess);
 end;
