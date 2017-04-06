@@ -109,9 +109,9 @@ begin
       if (Width>640) or (dev<>'') then
         begin
           if dev<>'' then
-            CapProcess.CommandLine:='dscapture /devname "'+dev+'" /width '+IntToStr(Width)+' /height '+IntToStr(Height)+' /period 1000 /frames 60 /bmp'
+            CapProcess.CommandLine:='dscapture /devname "'+dev+'" /width '+IntToStr(Width)+' /height '+IntToStr(Height)+' /period 1000 /frames 5 /bmp'
           else
-            CapProcess.CommandLine:='dscapture /width '+IntToStr(Width)+' /height '+IntToStr(Height)+' /period 100 /frames 60 /bmp';
+            CapProcess.CommandLine:='dscapture /width '+IntToStr(Width)+' /height '+IntToStr(Height)+' /period 100 /frames 5 /bmp';
         end
       else
         CapProcess.CommandLine:='vfwcapture';
