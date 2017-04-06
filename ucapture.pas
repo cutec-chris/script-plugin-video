@@ -30,8 +30,12 @@ begin
   Result := False;
 Recap:
   InitCapture(dev,Width,Height);
-  if not Assigned(CapProcess) then exit;
-  if not CapProcess.Active then exit;
+  if (not Assigned(CapProcess))
+  or (not CapProcess.Active) then
+    begin
+      if Assigned(CapProcess) then CapProcess.Terminate(0);
+      InitCapture(dev,Width,Height);
+    end;
   DeleteFile(GetTempDir+'capture.png');
   DeleteFile('frame.bmp');
   for i := 0 to 100 do

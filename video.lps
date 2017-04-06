@@ -8,15 +8,16 @@
       <Unit0>
         <Filename Value="video.lpr"/>
         <IsPartOfProject Value="True"/>
-        <CursorPos X="55" Y="7"/>
+        <CursorPos X="53" Y="7"/>
         <UsageCount Value="60"/>
         <Loaded Value="True"/>
       </Unit0>
       <Unit1>
         <Filename Value="ucapture.pas"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="2"/>
-        <TopLine Value="79"/>
-        <CursorPos X="41" Y="125"/>
+        <TopLine Value="12"/>
+        <CursorPos X="32" Y="33"/>
         <UsageCount Value="25"/>
         <Loaded Value="True"/>
       </Unit1>
@@ -368,7 +369,7 @@
       <Unit50>
         <Filename Value="uvideofunctions.pas"/>
         <EditorIndex Value="1"/>
-        <CursorPos X="71" Y="152"/>
+        <TopLine Value="126"/>
         <UsageCount Value="10"/>
         <Loaded Value="True"/>
       </Unit50>
@@ -391,10 +392,9 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uVideoTest"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="3"/>
-        <TopLine Value="101"/>
-        <CursorPos X="53" Y="101"/>
+        <TopLine Value="165"/>
+        <CursorPos X="56" Y="186"/>
         <UsageCount Value="10"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -407,7 +407,7 @@
         <UsageCount Value="10"/>
       </Unit54>
     </Units>
-    <JumpHistory Count="27" HistoryIndex="26">
+    <JumpHistory Count="29" HistoryIndex="28">
       <Position1>
         <Filename Value="ucapture.pas"/>
         <Caret Line="101" TopLine="73"/>
@@ -516,6 +516,14 @@
         <Filename Value="..\..\..\base\base_scripts\uvideotest.pas"/>
         <Caret Line="75" Column="17" TopLine="52"/>
       </Position27>
+      <Position28>
+        <Filename Value="video.lpr"/>
+        <Caret Line="7" Column="53"/>
+      </Position28>
+      <Position29>
+        <Filename Value="ucapture.pas"/>
+        <Caret Line="130" Column="28" TopLine="89"/>
+      </Position29>
     </JumpHistory>
   </ProjectSession>
   <Debugging>
